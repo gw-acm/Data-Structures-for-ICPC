@@ -1,0 +1,8 @@
+* A Data Structures Exercise for ICPC students
+This is designed as an exercise for ICPC students. It is under development, and will be updated for students later.
+
+** Upload instructions
+Please create a new branch with your github name. I will check your branches for your code, but I will also be checking with the master interfaces file.
+
+* ICPC GWU
+The GWU ICPC team meets at 6:00 PM Thursdays on the 7th floor of Phillips Hall in the CS Conference room. We would love to have more people join us, so pop on in! (Stack pun totally intended.
