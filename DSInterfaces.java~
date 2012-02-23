@@ -1,0 +1,6 @@
+public interface IDS<T implements Comparable<T>> {
+    public void add(T);
+    public T get();
+    public List<T> asList();
+    public String toString();
+}
