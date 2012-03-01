@@ -7,6 +7,8 @@ public interface IDS<T implements Comparable<T>> extends Iterable{
     public boolean contains(T t);
     public List<T> asList();
     public String toString();
+    public int size();
+    public void empty(); //Removes all elements from the data structure
 }
 
 /**
@@ -17,7 +19,7 @@ public interface ILinkedList<T implements Comparable<T>> extends IDS<T> {
     public void sort();
     public T getFirst();
     public T getLast();
-    public T get(int i);
+    public T get(int i); //Zero-based
 }
 
 /**
