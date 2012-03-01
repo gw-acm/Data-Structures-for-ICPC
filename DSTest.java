@@ -253,6 +253,142 @@ public class DSTest {
 	}
     }
 
+    /**********************************************************
+     *                  Queue Test Suite                      *
+     * To be run on classes that work on the IQueue interface *
+     **********************************************************/
+
+    public void runQueueSuite(IQueue<Integer> q) {
+	runGenericTestSuite(q);
+	q.empty();
+	enqueue_in_order(q);
+    }
+    public void runPriorityQueueSuite(IQueue<Integer> q) {
+	runGenericQueueSuite(q);
+	q.empty();
+	enqueue_in_order_priority(q);
+    }
+
+    public void runGenericQueueSuite(IQueue<Integer> q) {
+	runGenericTestSuite(q);
+	q.empty();
+	dequeue_iterate(q);
+    }
+
+    public void enqueue_in_order(IQueue<Integer> q) {
+	for(int t = 0; t < numTests; t++) {
+	    int r = rand.nextInt();
+	    int[] is = new int[r];
+	    for(int i = 0; i < r; i++) {
+		is[i] = r.nextInt();
+		q.enqueue(is[i]);
+	    }
+	    
+	    int k = 0;
+	    for(Integer n : q) {
+		if(is[k] != n) {
+		    System.out.printf("Found bug in enqueue_in_order after %d tests: the %dth item added is %d, but the iterator accessed %d.\n", t, k, is[k], n);
+		}
+	    }
+	    q.empty();
+	}
+    }
+
+    public void enqueue_in_order_priority(IQueue<Integer> q) {
+	for(int t = 0; t < numTests; t++) {
+	    int r = rand.nextInt();
+	    for(int i = 0; i < r; i++) {
+		q.enqueue(r.nextInt());
+	    }
+
+	    int last = q.dequeue();
+	    for(Integer n : q) {
+		if(n < last) {
+		    System.out.printf("Found bug in enqueue_in_order_priority after %d tests: %d was found in the queue, but %d was in the queue before it.\n", t, n, last);
+		}
+		else {
+		    last = n;
+		}
+	    }
+	    q.empty();
+	}
+    }
+
+    public void dequeue_iterate(IQueue<Integer> q) {
+	for(int t = 0; t < numTests; t++) {
+	    int r = r.nextInt();
+	    for(int i = 0; i < r; i++) {
+		q.enqueue(r.nextInt());
+	    }
+
+	    for(Integer n : q) {
+		int m = q.dequeue();
+		if(n != m) {
+		    System.out.printf("Found bug in dequeue_iterate after %d tests: iterator returns %d, but dequeue() returns %d.\n", t, n, m);
+		}
+	    }
+	    q.empty();
+	}
+    }
+	
+    
+    /*********************************************
+     *              Stack Test Suite             *
+     * For data structures that implement IStack *
+     *********************************************/
+    
+    public void runStackTestSuite(IStack<Integer> s) {
+	runGenericTestSuite(s);
+	s.empty();
+	pop_iterate(s);
+	s.empty();
+	pop_order(s);
+	s.empty();
+    }
+
+    public void pop_iterate(IStack<Integer> s) {
+	for(int t = 0; t < numTests; t++) {
+	    int r = rand.nextInt();
+	    for(int i = 0; i < r; i++) {
+		s.push(p);
+	    }
+	    
+	    for(Integer n : s) {
+		int m = s.pop();
+		if(n != m) {
+		    System.out.printf("Found bug in pop_iterate after %d tests: Iterator returns %d, while pop returns %d.\n", t, n, m);
+		}
+	    }
+	    
+	    s.empty();
+	}
+    }
+
+    public void pop_order(IStack<Integer> s) {
+	for(int t = 0; t < numTests; t++) {
+	    int r = rand.nextInt();
+	    int[] is = new int[r];
+	    for(int i = 0; i < r; i++) {
+		is[i] = rand.nextInt();
+		s.push(is[i]);
+	    }
+	    
+	    int k = r - 1;
+	    for(Integer n : s) {
+		if(k < 0) {
+		    System.out.printf("Found bug in pop_order after %d tests: iterator iterated over more elements then were added.\n", t);
+		    break;
+		}
+		if(n != is[k]) {
+		    System.out.printf("Found bug in pop_order after %d tests: Iterator returns %d, it should return %d.\n", t, n, is[k]);
+		}
+		k--;
+	    }
+	    
+	    s.empty();
+	}
+    }
 }
+
 			
 	

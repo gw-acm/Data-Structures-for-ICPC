@@ -25,6 +25,7 @@ public interface ILinkedList<T implements Comparable<T>> extends IDS<T> {
 /**
  * A Queue interface. Think of a queue at the grocery store.
  * Please write a queue and a priority queue.
+ * The priority queue should access smaller elements first.
  */
 public interface IQueue<T implements Comparable<T>> extends IDS<T> {
     public void enqueue(T t);
