@@ -1,5 +1,6 @@
 import java.util.Random;
 import java.util.Collections;
+import java.util.ArrayList;
 
 /**
  * Lists suites of tests for data structures using the GW ICPC data structure interface. 
@@ -110,7 +111,7 @@ public class DSTest {
 		    boolean b = ds.contains(j); 
 		    boolean b2 = true; //true => j not in cache
 		    for(int k = 0; k < r; k++) {
-			if(is[k] = j) { //j in cache
+			if(is[k] == j) { //j in cache
 			    if(!b) {//but, not in data structure
 				System.out.printf("Found bug in addContains after %d tests: added %d as %dth element to datastructure, contains(%i) is false.\n", t, is[k], k, is[k]);
 			    }
@@ -247,7 +248,7 @@ public class DSTest {
 		lst.add(rand.nextInt());
 	    }
 	    if(lst.getLast() != lst.get(lst.size() - 1)) {
-		System.out.printf("Found bug in lastSize: getLast() returns %d, but size() is %d and get(%d) return %d.\n" lst.getLast(), lst.size(), lst.size() - 1, lst.get(lst.size() - 1));
+		System.out.printf("Found bug in lastSize: getLast() returns %d, but size() is %d and get(%d) return %d.\n", lst.getLast(), lst.size(), lst.size() - 1, lst.get(lst.size() - 1));
 	    }
 	    lst.empty();
 	}
@@ -280,7 +281,7 @@ public class DSTest {
 	    int r = rand.nextInt();
 	    int[] is = new int[r];
 	    for(int i = 0; i < r; i++) {
-		is[i] = r.nextInt();
+		is[i] = rand.nextInt();
 		q.enqueue(is[i]);
 	    }
 	    
@@ -298,7 +299,7 @@ public class DSTest {
 	for(int t = 0; t < numTests; t++) {
 	    int r = rand.nextInt();
 	    for(int i = 0; i < r; i++) {
-		q.enqueue(r.nextInt());
+		q.enqueue(rand.nextInt());
 	    }
 
 	    int last = q.dequeue();
@@ -316,9 +317,9 @@ public class DSTest {
 
     public void dequeue_iterate(IQueue<Integer> q) {
 	for(int t = 0; t < numTests; t++) {
-	    int r = r.nextInt();
+	    int r = rand.nextInt();
 	    for(int i = 0; i < r; i++) {
-		q.enqueue(r.nextInt());
+		q.enqueue(rand.nextInt());
 	    }
 
 	    for(Integer n : q) {
@@ -388,6 +389,101 @@ public class DSTest {
 	    s.empty();
 	}
     }
+	
+	/*********************************************
+     *              Tree Test Suite              *
+     * For data structures that implement IBTree *
+     *********************************************/
+	public void runTreeTestSuite(IBTree<Integer> t) {
+		runGenericTestSuite(t);
+		t.empty();
+		test_order(t);
+		t.empty();
+    }
+	
+	public void test_order(IBTree<Integer> test_tree) {
+	int num_nodes = 50;
+	for(int t = 0; t < numTests; t++) {
+		BinaryTree tree = new BinaryTree();
+		int v = rand.nextInt();
+		BinaryTree.Node root = new BinaryTree.Node(v);
+		test_tree.add(v);
+		for(int i = 1; i < num_nodes; i++) {
+			v = rand.nextInt();
+			tree.insert(root, v);
+			test_tree.add(v);
+		}
+		//Pre
+		ArrayList<Integer> pre = new ArrayList<Integer>();
+		tree.getPreOrder(root, pre);
+		int i = 0;
+		for (Integer n : test_tree.preOrder())
+		{
+			if (n != pre.get(i))
+			{
+				System.out.printf("Found bug in test_tree preOrder after %d tests: Iterator returns %d, it should return %d.\n", t, n, pre.get(i));
+				break;
+			}
+			i++;
+		}
+		//In
+		ArrayList<Integer> in = new ArrayList<Integer>();
+		tree.getPreOrder(root, in);
+		i = 0;
+		for (Integer n : test_tree.inOrder())
+		{
+			if (n != in.get(i))
+			{
+				System.out.printf("Found bug in test_tree inOrder after %d tests: Iterator returns %d, it should return %d.\n", t, n, in.get(i));
+				break;
+			}
+			i++;
+		}
+		//Post
+		ArrayList<Integer> post = new ArrayList<Integer>();
+		tree.getPostOrder(root, post);
+		i = 0;
+		for (Integer n : test_tree.postOrder())
+		{
+			if (n != post.get(i))
+			{
+				System.out.printf("Found bug in test_tree postOrder after %d tests: Iterator returns %d, it should return %d.\n", t, n, post.get(i));
+				break;
+			}
+			i++;
+		}
+	}
+	}
+	
+	/*********************************************
+     *              Hash Test Suite              *
+     * For data structures that implement IMap   *
+     *********************************************/
+	public void runHashTestSuite(IMap<String, Integer> m) {
+		runGenericTestSuite(m);
+		m.empty();
+		test_map(m);
+		m.empty();
+    }
+	
+	public void test_map(IMap<String, Integer> m) {
+		for(int t = 0; t < numTests; t++) {
+			int r = rand.nextInt();
+			for(int i = 0; i < r; i++) {
+				String s = Long.toString(Math.abs(rand.nextLong()), 36);
+				int v = rand.nextInt();
+				m.set(s,v);
+				if (v != m.get(s))
+				{
+					System.out.printf("Found bug in test_map after %d tests: Iterator returns %d, it should return %d.\n", t, m.get(s), v);
+					break;
+				}
+			}
+			m.empty();
+		}
+    }
+	
+	
 }
 
 			
